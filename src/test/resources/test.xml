@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Graph>
+	<adjacencyItem>
+		<node>
+			<nodeText>Testnode2</nodeText>
+		</node>
+		<edge>
+			<costs>3</costs>
+			<node>
+				<nodeText>Testnode1</nodeText>
+			</node>
+		</edge>
+	</adjacencyItem>
+	<adjacencyItem>
+		<node>
+			<nodeText>Testnode1</nodeText>
+		</node>
+		<edge>
+			<costs>1</costs>
+			<node>
+				<nodeText>Testnode2</nodeText>
+			</node>
+		</edge>
+		<edge>
+			<costs>2</costs>
+			<node>
+				<nodeText>Testnode3</nodeText>
+			</node>
+		</edge>
+	</adjacencyItem>
+</Graph>
