@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.xml.bind.JAXBException;
 
+import de.htw.berlin.student.graph.dialog.AddEdgeDialog;
 import de.htw.berlin.student.graph.dialog.NewNodeDialog;
 import de.htw.berlin.student.graph.io.FileUtil;
 import de.htw.berlin.student.graph.model.Graph;
@@ -109,7 +110,8 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LOGGER.info("Add edge. Implement me");
+				AddEdgeDialog dialog = new AddEdgeDialog(MainWindow.this, graph);
+				// TODO: repaint ...
 			}
 		});
 
