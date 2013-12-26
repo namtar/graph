@@ -26,6 +26,7 @@ import javax.xml.bind.JAXBException;
 import de.htw.berlin.student.graph.dialog.AddEdgeDialog;
 import de.htw.berlin.student.graph.dialog.DeleteNodeDialog;
 import de.htw.berlin.student.graph.dialog.NewNodeDialog;
+import de.htw.berlin.student.graph.dialog.RemoveEdgeDialog;
 import de.htw.berlin.student.graph.io.FileUtil;
 import de.htw.berlin.student.graph.model.Graph;
 
@@ -122,7 +123,7 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LOGGER.info("Delete edge. Implement me");
+				RemoveEdgeDialog dialog = new RemoveEdgeDialog(MainWindow.this, graph);
 			}
 		});
 
