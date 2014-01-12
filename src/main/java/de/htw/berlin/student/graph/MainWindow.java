@@ -8,14 +8,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,11 +20,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.xml.bind.JAXBException;
 
 import de.htw.berlin.student.graph.dialog.AddEdgeDialog;
 import de.htw.berlin.student.graph.dialog.DeleteNodeDialog;
+import de.htw.berlin.student.graph.dialog.GenerateRandomGraphDialog;
 import de.htw.berlin.student.graph.dialog.NewNodeDialog;
 import de.htw.berlin.student.graph.dialog.RemoveEdgeDialog;
 import de.htw.berlin.student.graph.io.FileUtil;
@@ -145,10 +142,21 @@ public class MainWindow extends JFrame {
 			}
 		});
 
+		JButton generateRandomGraphButton = new JButton("Zufälligen Graph erzeugen");
+		generateRandomGraphButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GenerateRandomGraphDialog dialog = new GenerateRandomGraphDialog(MainWindow.this, graph);
+				showGraphView.repaint();
+			}
+		});
+
 		actionBar.add(newNodeBtn);
 		actionBar.add(addEdgeBtn);
 		actionBar.add(deleteEdgeBtn);
 		actionBar.add(deleteNodeBtn);
+		actionBar.add(generateRandomGraphButton);
 	}
 
 	private void initMenu() {

@@ -99,31 +99,31 @@ public class ShowGraphView extends JPanel {
 
 						// if (startNode.getChoordX() - targetNode.getChoordX() < 0) {
 
-						int tx = 0;
-						int ty = 0;
-						double gradient = (targetNode.getChoordY() - startNode.getChoordY()) / (targetNode.getChoordX() - startNode.getChoordX());
-						LOGGER.log(Level.INFO, "Gradient: " + gradient);
+//						int tx = 0;
+//						int ty = 0;
+//						double gradient = (targetNode.getChoordY() - startNode.getChoordY()) / (targetNode.getChoordX() - startNode.getChoordX());
+//						LOGGER.log(Level.INFO, "Gradient: " + gradient);
 
-						if (startNode.getChoordX() == targetNode.getChoordX()) {
-							tx = targetNode.getChoordX();
-						} else {
-							if ((startNode.getChoordX() - targetNode.getChoordX()) < 0) {
-								tx = targetNode.getChoordX() - Double.valueOf((nodeHeight / 2)).intValue();
-							} else {
-								tx = targetNode.getChoordX() + Double.valueOf((nodeHeight / 2)).intValue();
-							}
-						}
-						if (startNode.getChoordY() == targetNode.getChoordY()) {
-							ty = targetNode.getChoordY();
-						} else {
-							if ((startNode.getChoordY() - targetNode.getChoordY()) < 0) {
-								ty = targetNode.getChoordY() - Double.valueOf((nodeHeight / 2)).intValue();
-							} else {
-								ty = targetNode.getChoordY() + Double.valueOf((nodeHeight / 2)).intValue();
-							}
-						}
+//						if (startNode.getChoordX() == targetNode.getChoordX()) {
+//							tx = targetNode.getChoordX();
+//						} else {
+//							if ((startNode.getChoordX() - targetNode.getChoordX()) < 0) {
+//								tx = targetNode.getChoordX() - Double.valueOf((nodeHeight / 2)).intValue();
+//							} else {
+//								tx = targetNode.getChoordX() + Double.valueOf((nodeHeight / 2)).intValue();
+//							}
+//						}
+//						if (startNode.getChoordY() == targetNode.getChoordY()) {
+//							ty = targetNode.getChoordY();
+//						} else {
+//							if ((startNode.getChoordY() - targetNode.getChoordY()) < 0) {
+//								ty = targetNode.getChoordY() - Double.valueOf((nodeHeight / 2)).intValue();
+//							} else {
+//								ty = targetNode.getChoordY() + Double.valueOf((nodeHeight / 2)).intValue();
+//							}
+//						}
 
-						drawArrow(g, startNode.getChoordX(), startNode.getChoordY(), tx, ty);
+//						drawArrow(g, startNode.getChoordX(), startNode.getChoordY(), tx, ty);
 
 						// draw edge costs
 						int labelX = (startNode.getChoordX() - targetNode.getChoordX()) / 2;
