@@ -126,6 +126,10 @@ public final class GraphMapper {
 
 		List<Edge> edges = new ArrayList<Edge>();
 
+		if (xmlEdges == null) {
+			return edges;
+		}
+
 		for (XmlEdge xmlEdge : xmlEdges) {
 
 			Edge edge = new Edge(mapXmlNodeToNode(xmlEdge.getNode()), xmlEdge.getCosts());

@@ -50,7 +50,7 @@ public class DeleteNodeDialog extends JDialog {
 		add(createInputPanel(), BorderLayout.CENTER);
 		add(createButtonPanel(), BorderLayout.PAGE_END);
 		// show dialog
-		setTitle("Neuer Knoten");
+		setTitle("Knoten löschen");
 		setModal(true);
 		setPreferredSize(new Dimension(300, 200));
 		setResizable(false);

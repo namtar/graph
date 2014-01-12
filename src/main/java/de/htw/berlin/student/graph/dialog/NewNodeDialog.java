@@ -73,6 +73,7 @@ public class NewNodeDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				// validate that at least one char has been set to the textfield
+				// TODO: validate that no node with the same name already exists.
 				if (nodeTextTextField.getText() == null || nodeTextTextField.getText().length() < 1) {
 					JOptionPane.showMessageDialog(NewNodeDialog.this, "Es wurde kein Text eigegeben.", "Validierungs-Fehler", JOptionPane.ERROR_MESSAGE);
 				} else {

@@ -50,7 +50,7 @@ public class RemoveEdgeDialog extends JDialog {
 		add(createInputPanel(), BorderLayout.CENTER);
 		add(createButtonPanel(), BorderLayout.PAGE_END);
 		// show dialog
-		setTitle("Kante hinzufügen");
+		setTitle("Kante löschen");
 		setModal(true);
 		setPreferredSize(new Dimension(400, 200));
 		setResizable(false);
@@ -85,6 +85,8 @@ public class RemoveEdgeDialog extends JDialog {
 			public void itemStateChanged(ItemEvent e) {
 
 				// if the first time an item was selected one is not able to select no item again.
+				// perhaps do this ((DefaultComboBoxModel)jCmbPatients.getModel()).insertElementAt("--None--",0);
+
 				edgeCb.removeAllItems(); // clear up edge combo box
 				Node selectedNode = (Node) nodeCb.getSelectedItem();
 

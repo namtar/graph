@@ -1,6 +1,7 @@
 package de.htw.berlin.student.graph;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -12,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -21,6 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.xml.bind.JAXBException;
 
 import de.htw.berlin.student.graph.dialog.AddEdgeDialog;
@@ -29,6 +32,7 @@ import de.htw.berlin.student.graph.dialog.NewNodeDialog;
 import de.htw.berlin.student.graph.dialog.RemoveEdgeDialog;
 import de.htw.berlin.student.graph.io.FileUtil;
 import de.htw.berlin.student.graph.model.Graph;
+import de.htw.berlin.student.graph.view.ShowGraphView;
 
 /**
  * The main window of the application.
@@ -42,6 +46,7 @@ public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
 	private Graph graph;
+	private ShowGraphView showGraphView;
 
 	/**
 	 * Default constructor.
@@ -61,6 +66,7 @@ public class MainWindow extends JFrame {
 		initComponents();
 		initMenu();
 		doPosition();
+		addGraphDrawArea();
 
 		pack();
 		setVisible(true);
@@ -102,7 +108,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				NewNodeDialog dialog = new NewNodeDialog(graph, MainWindow.this);
-				// TODO: repaint ...
+				showGraphView.repaint();
 			}
 		});
 
@@ -113,7 +119,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AddEdgeDialog dialog = new AddEdgeDialog(MainWindow.this, graph);
-				// TODO: repaint ...
+				showGraphView.repaint();
 			}
 		});
 
@@ -124,6 +130,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				RemoveEdgeDialog dialog = new RemoveEdgeDialog(MainWindow.this, graph);
+				showGraphView.repaint();
 			}
 		});
 
@@ -134,6 +141,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DeleteNodeDialog dialog = new DeleteNodeDialog(MainWindow.this, graph);
+				showGraphView.repaint();
 			}
 		});
 
@@ -155,7 +163,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				graph = new Graph();
-				// TODO: clear up drawn graph panel
+				showGraphView.repaint();
 			}
 		});
 
@@ -218,5 +226,13 @@ public class MainWindow extends JFrame {
 
 		menubar.add(mainMenu);
 		setJMenuBar(menubar);
+	}
+
+	private void addGraphDrawArea() {
+
+		showGraphView = new ShowGraphView(graph);
+		showGraphView.setBorder(BorderFactory.createLineBorder(Color.RED));
+
+		contentPane.add(showGraphView, BorderLayout.CENTER);
 	}
 }

@@ -142,6 +142,13 @@ public class AddEdgeDialog extends JDialog {
 
 				Integer edgeCosts = null;
 				boolean catchedError = false;
+
+				if (edgeCostsTextField.getText() == null) {
+					catchedError = true;
+					JOptionPane.showMessageDialog(AddEdgeDialog.this, "Es muss eine Bewertung eingegeben werden.", "Validierungs-Fehler",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
 				if (edgeCostsTextField.getText() != null && edgeCostsTextField.getText().length() > 0) {
 
 					try {
