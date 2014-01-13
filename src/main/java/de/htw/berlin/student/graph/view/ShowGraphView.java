@@ -80,14 +80,16 @@ public class ShowGraphView extends JPanel {
 					// calculate choordinates
 					int choordX = Double.valueOf(offsetX + Math.cos(i * angle) * radius).intValue();
 					int choordY = Double.valueOf(offsetY + Math.sin(i * angle) * radius).intValue();
-					LOGGER.log(Level.INFO, "ChoordX: " + choordX);
-					LOGGER.log(Level.INFO, "ChoordY: " + choordY);
+					// LOGGER.log(Level.INFO, "ChoordX: " + choordX);
+					// LOGGER.log(Level.INFO, "ChoordY: " + choordY);
 
 					choordsForNodes.put(node, new ChoordWrapper(choordX, choordY));
 					i++;
 				}
 
 				// draw edges first
+				// TODO: we draw one edge two times at the moment because we have an undirected graph. But this
+				// shouldn`t matter because we have the same edge costs and no one will see in. Perhaps refactor later.
 				for (Entry<Node, List<Edge>> entry : graph.getAdjacencyList().entrySet()) {
 
 					ChoordWrapper startNode = choordsForNodes.get(entry.getKey());
@@ -99,31 +101,32 @@ public class ShowGraphView extends JPanel {
 
 						// if (startNode.getChoordX() - targetNode.getChoordX() < 0) {
 
-//						int tx = 0;
-//						int ty = 0;
-//						double gradient = (targetNode.getChoordY() - startNode.getChoordY()) / (targetNode.getChoordX() - startNode.getChoordX());
-//						LOGGER.log(Level.INFO, "Gradient: " + gradient);
+						// int tx = 0;
+						// int ty = 0;
+						// double gradient = (targetNode.getChoordY() - startNode.getChoordY()) /
+						// (targetNode.getChoordX() - startNode.getChoordX());
+						// LOGGER.log(Level.INFO, "Gradient: " + gradient);
 
-//						if (startNode.getChoordX() == targetNode.getChoordX()) {
-//							tx = targetNode.getChoordX();
-//						} else {
-//							if ((startNode.getChoordX() - targetNode.getChoordX()) < 0) {
-//								tx = targetNode.getChoordX() - Double.valueOf((nodeHeight / 2)).intValue();
-//							} else {
-//								tx = targetNode.getChoordX() + Double.valueOf((nodeHeight / 2)).intValue();
-//							}
-//						}
-//						if (startNode.getChoordY() == targetNode.getChoordY()) {
-//							ty = targetNode.getChoordY();
-//						} else {
-//							if ((startNode.getChoordY() - targetNode.getChoordY()) < 0) {
-//								ty = targetNode.getChoordY() - Double.valueOf((nodeHeight / 2)).intValue();
-//							} else {
-//								ty = targetNode.getChoordY() + Double.valueOf((nodeHeight / 2)).intValue();
-//							}
-//						}
+						// if (startNode.getChoordX() == targetNode.getChoordX()) {
+						// tx = targetNode.getChoordX();
+						// } else {
+						// if ((startNode.getChoordX() - targetNode.getChoordX()) < 0) {
+						// tx = targetNode.getChoordX() - Double.valueOf((nodeHeight / 2)).intValue();
+						// } else {
+						// tx = targetNode.getChoordX() + Double.valueOf((nodeHeight / 2)).intValue();
+						// }
+						// }
+						// if (startNode.getChoordY() == targetNode.getChoordY()) {
+						// ty = targetNode.getChoordY();
+						// } else {
+						// if ((startNode.getChoordY() - targetNode.getChoordY()) < 0) {
+						// ty = targetNode.getChoordY() - Double.valueOf((nodeHeight / 2)).intValue();
+						// } else {
+						// ty = targetNode.getChoordY() + Double.valueOf((nodeHeight / 2)).intValue();
+						// }
+						// }
 
-//						drawArrow(g, startNode.getChoordX(), startNode.getChoordY(), tx, ty);
+						// drawArrow(g, startNode.getChoordX(), startNode.getChoordY(), tx, ty);
 
 						// draw edge costs
 						int labelX = (startNode.getChoordX() - targetNode.getChoordX()) / 2;
@@ -135,8 +138,8 @@ public class ShowGraphView extends JPanel {
 						labelX += startNode.getChoordX();
 						labelY += startNode.getChoordY();
 
-						LOGGER.log(Level.INFO, "LabelX: " + labelX);
-						LOGGER.log(Level.INFO, "LabelY: " + labelY);
+						// LOGGER.log(Level.INFO, "LabelX: " + labelX);
+						// LOGGER.log(Level.INFO, "LabelY: " + labelY);
 
 						g.setColor(Color.BLACK);
 						g.drawString(String.valueOf(edge.getCosts()), labelX - f.stringWidth(String.valueOf(edge.getCosts())) / 2, labelY + f.getHeight() / 2);
@@ -149,7 +152,7 @@ public class ShowGraphView extends JPanel {
 					// int nodeWidth = Math.max(width, f.stringWidth(entry.getKey().getNodeText()) + width / 2);
 
 					ChoordWrapper wrapper = entry.getValue();
-					LOGGER.log(Level.INFO, wrapper.toString());
+					// LOGGER.log(Level.INFO, wrapper.toString());
 
 					g.setColor(Color.white);
 					g.fillOval(wrapper.getChoordX() - nodeWidth / 2, wrapper.getChoordY() - nodeHeight / 2, nodeWidth, nodeHeight);
@@ -192,7 +195,6 @@ public class ShowGraphView extends JPanel {
 	 * 
 	 * @author Matthias Drummer
 	 * @author Marcel Piater
-	 * 
 	 */
 	private class ChoordWrapper {
 

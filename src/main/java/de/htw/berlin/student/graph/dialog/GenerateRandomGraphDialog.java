@@ -4,11 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,9 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import de.htw.berlin.student.graph.model.Edge;
 import de.htw.berlin.student.graph.model.Graph;
-import de.htw.berlin.student.graph.model.Node;
 import de.htw.berlin.student.graph.util.SpringUtilities;
 
 /**
@@ -117,7 +110,12 @@ public class GenerateRandomGraphDialog extends JDialog {
 				}
 
 				// validate. The may be not more edges that number of nodes - 1
-				if (numberOfEdges > (numberOfNodes - 1) * numberOfEdges) {
+				int maxEdges = 0;
+				for (int i = numberOfNodes - 1; i > 0; i--) {
+					maxEdges += i;
+				}
+
+				if (numberOfEdges > maxEdges) {
 					catchedError = true;
 					JOptionPane
 							.showMessageDialog(GenerateRandomGraphDialog.this,
@@ -126,65 +124,8 @@ public class GenerateRandomGraphDialog extends JDialog {
 				}
 
 				if (!catchedError) {
-					// generate graph by settings
-					graph.getAdjacencyList().clear();
-					for (int i = 1; i <= numberOfNodes; i++) {
-						Node node = new Node();
-						node.setNodeText(String.valueOf(i));
-						graph.getAdjacencyList().put(node, new ArrayList<Edge>());
-					}
 
-					Node[] nodes = new Node[numberOfNodes];
-					graph.getAdjacencyList().keySet().toArray(nodes);
-					// edges
-					Random rand = new Random();
-					int nodeIndex = 0;
-					for (int i = 0; i < numberOfEdges; i++) {
-						// first add for every node a random edge.
-
-						Node startNode = nodes[nodeIndex];
-						// create random edge for actual node.
-						boolean hasAlreadyEdge = true;
-						while (hasAlreadyEdge) {
-							int randomInt = rand.nextInt(numberOfNodes);
-							Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "RandomInt: " + randomInt);
-							if (randomInt == nodeIndex) {
-								Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "NumberOfNodes: " + numberOfNodes);
-								Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO,
-										"Kollission: randomInt / nodeIndex " + randomInt + " / " + nodeIndex);
-								continue;
-							}
-
-							Node checkNode = nodes[randomInt];
-
-							List<Edge> edgesForNode = graph.getAdjacencyList().get(startNode);
-							boolean contained = false;
-							for (Edge edge : edgesForNode) {
-								if (edge.getNode().equals(checkNode)) {
-									contained = true;
-									break;
-								}
-							}
-							if (!contained) {
-								// add new Edge
-								Random edgeCostRandom = new Random();
-								Edge edge = new Edge(checkNode, edgeCostRandom.nextInt(100));
-								edgesForNode.add(edge);
-								hasAlreadyEdge = false;
-							}
-
-						}
-
-						if (nodeIndex == numberOfNodes - 1) {
-							// then start with the first node again.
-							Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "Restart Nodes");
-							nodeIndex = 0;
-						} else {
-							nodeIndex++;
-						}
-
-					}
-
+					graph.createRandomGraph(numberOfNodes, numberOfEdges);
 					// close
 					setVisible(false);
 

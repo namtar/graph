@@ -5,6 +5,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -76,13 +82,11 @@ public class AddEdgeDialog extends JDialog {
 		textAreaPanel.setLayout(new BoxLayout(textAreaPanel, BoxLayout.LINE_AXIS));
 
 		ComboBoxModel sourceNodeModel = new DefaultComboBoxModel(graph.getAdjacencyList().keySet().toArray());
-		ComboBoxModel targetNodeModel = new DefaultComboBoxModel(graph.getAdjacencyList().keySet().toArray());
 
 		sourceNodeModel.setSelectedItem(null);
-		targetNodeModel.setSelectedItem(null);
 
 		sourceNode = new JComboBox(sourceNodeModel);
-		targetNode = new JComboBox(targetNodeModel);
+		targetNode = new JComboBox();
 		sourceNode.setMaximumSize(sourceNode.getPreferredSize());
 		sourceNode.setMinimumSize(new Dimension(150, sourceNode.getPreferredSize().height));
 		sourceNode.setPreferredSize(new Dimension(150, sourceNode.getPreferredSize().height));
@@ -94,6 +98,39 @@ public class AddEdgeDialog extends JDialog {
 
 		sourceNode.setRenderer(renderer);
 		targetNode.setRenderer(renderer);
+
+		sourceNode.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// only display nodes which do not have already an edge
+
+				targetNode.removeAllItems();
+				Node selectedNode = (Node) sourceNode.getSelectedItem();
+
+				if (selectedNode != null) {
+
+					List<Node> nodesToDisplay = new ArrayList<Node>();
+					Set<Node> allNodes = graph.getAdjacencyList().keySet();
+
+					// get edged for selected node and throw out all target nodes where already an edge exists
+					List<Edge> edgesForSelectedNode = graph.getAdjacencyList().get(selectedNode);
+					Set<Node> nodesInEdges = new HashSet<Node>();
+					for (Edge edge : edgesForSelectedNode) {
+						nodesInEdges.add(edge.getNode());
+					}
+
+					for (Node node : allNodes) {
+						if (!node.equals(selectedNode) && !nodesInEdges.contains(node)) {
+							nodesToDisplay.add(node);
+						}
+					}
+
+					ComboBoxModel targetNodeModel = new DefaultComboBoxModel(nodesToDisplay.toArray());
+					targetNode.setModel(targetNodeModel);
+				}
+			}
+		});
 
 		inputPanel.add(sourceNode);
 		// inputPanel.add(Box.createRigidArea(new Dimension(10, 0)));
