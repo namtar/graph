@@ -180,7 +180,7 @@ public class AddEdgeDialog extends JDialog {
 				Integer edgeCosts = null;
 				boolean catchedError = false;
 
-				if (edgeCostsTextField.getText() == null) {
+				if (edgeCostsTextField.getText() == null || edgeCostsTextField.getText().isEmpty()) {
 					catchedError = true;
 					JOptionPane.showMessageDialog(AddEdgeDialog.this, "Es muss eine Bewertung eingegeben werden.", "Validierungs-Fehler",
 							JOptionPane.ERROR_MESSAGE);
@@ -189,10 +189,10 @@ public class AddEdgeDialog extends JDialog {
 				if (edgeCostsTextField.getText() != null && edgeCostsTextField.getText().length() > 0) {
 
 					try {
-						edgeCosts = Integer.valueOf(edgeCostsTextField.getText());
+						edgeCosts = Integer.valueOf(edgeCostsTextField.getText());											
 					} catch (NumberFormatException e1) {
 						catchedError = true;
-						JOptionPane.showMessageDialog(AddEdgeDialog.this, "Es muss entweder ein Zahl an Bewertung eingeben werden oder nichts.",
+						JOptionPane.showMessageDialog(AddEdgeDialog.this, "Es muss entweder ein Zahl an Bewertung eingeben werden.",
 								"Validierungs-Fehler", JOptionPane.ERROR_MESSAGE);
 					}
 				}

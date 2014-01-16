@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import de.htw.berlin.student.graph.dialog.GenerateRandomGraphDialog;
+import java.util.Random;
 
 /**
  * A graph model. Normally a model should not have any logic, but in this case we implement logic to manipulate the
@@ -227,8 +223,6 @@ public class Graph implements Serializable {
 					// add new Edge
 					Random edgeCostRandom = new Random();
 					Edge edge = new Edge(targetNode, edgeCostRandom.nextInt(100));
-
-					System.out.println("Call addEdge: " + i);
 
 					addEdge(startNode, edge); // this will add the edge bidirectional. If the node contains the edge.
 												// The reverse node has the edge too.

@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -20,6 +22,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBException;
 
 import de.htw.berlin.student.graph.dialog.AddEdgeDialog;
@@ -28,7 +32,9 @@ import de.htw.berlin.student.graph.dialog.GenerateRandomGraphDialog;
 import de.htw.berlin.student.graph.dialog.NewNodeDialog;
 import de.htw.berlin.student.graph.dialog.RemoveEdgeDialog;
 import de.htw.berlin.student.graph.io.FileUtil;
+import de.htw.berlin.student.graph.model.Edge;
 import de.htw.berlin.student.graph.model.Graph;
+import de.htw.berlin.student.graph.model.Node;
 import de.htw.berlin.student.graph.view.ShowGraphView;
 
 /**
@@ -42,7 +48,7 @@ public class MainWindow extends JFrame {
 	private static final Logger LOGGER = Logger.getLogger(MainWindow.class.getName());
 
 	private JPanel contentPane;
-	private Graph graph;
+	private final Graph graph;
 	private ShowGraphView showGraphView;
 
 	/**
@@ -60,7 +66,9 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout());
 
 		initActionBar();
-		initComponents();
+		
+		graph = new Graph(); // initial create an empty graph.
+		
 		initMenu();
 		doPosition();
 		addGraphDrawArea();
@@ -81,12 +89,6 @@ public class MainWindow extends JFrame {
 		// setVisible. Otherwise the calculation will go wrong.
 
 		this.setLocation(x, y);
-	}
-
-	private void initComponents() {
-
-		graph = new Graph(); // initial create an empty graph.
-
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				graph = new Graph();
+				graph.setAdjacencyList(new HashMap<Node, List<Edge>>());
 				showGraphView.repaint();
 			}
 		});
@@ -182,6 +184,8 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: save the existing graph to file using some dialog.
 				JFileChooser fc = new JFileChooser();
+				FileFilter ff = new FileNameExtensionFilter("XML", "xml");
+				fc.setFileFilter(ff);
 
 				if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 					String path = fc.getSelectedFile().toString();
@@ -206,10 +210,14 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: load graph from file using file open dialog
 				JFileChooser fc = new JFileChooser();
+				FileFilter ff = new FileNameExtensionFilter("XML", "xml");
+				fc.setFileFilter(ff);
+				
 				if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
 					try {
-						graph = FileUtil.loadGraph(file);
+						graph.setAdjacencyList(FileUtil.loadGraph(file).getAdjacencyList());
+						showGraphView.repaint();
 					} catch (JAXBException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(MainWindow.this, "Beim Laden trat ein Fehler auf.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -228,6 +236,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 
+		mainMenu.add(newGraphItem);
 		mainMenu.add(saveGraphItem);
 		mainMenu.add(loadGraphItem);
 		mainMenu.add(exitItem);
@@ -239,7 +248,7 @@ public class MainWindow extends JFrame {
 	private void addGraphDrawArea() {
 
 		showGraphView = new ShowGraphView(graph);
-		showGraphView.setBorder(BorderFactory.createLineBorder(Color.RED));
+//		showGraphView.setBorder(BorderFactory.createLineBorder(Color.RED));
 
 		contentPane.add(showGraphView, BorderLayout.CENTER);
 	}

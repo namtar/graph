@@ -5,11 +5,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -64,9 +64,6 @@ public class ShowGraphView extends JPanel {
 				int offsetX = drawArea.getWidth() / 2;
 				int offsetY = drawArea.getHeight() / 2;
 
-				// LOGGER.log(Level.INFO, "OffsetX: " + offsetX);
-				// LOGGER.log(Level.INFO, "OffsetY: " + offsetY);
-
 				int height = 30;
 				int width = 30;
 				double angle = 2 * Math.PI / graph.getAdjacencyList().keySet().size();
@@ -80,13 +77,12 @@ public class ShowGraphView extends JPanel {
 					// calculate choordinates
 					int choordX = Double.valueOf(offsetX + Math.cos(i * angle) * radius).intValue();
 					int choordY = Double.valueOf(offsetY + Math.sin(i * angle) * radius).intValue();
-					// LOGGER.log(Level.INFO, "ChoordX: " + choordX);
-					// LOGGER.log(Level.INFO, "ChoordY: " + choordY);
 
 					choordsForNodes.put(node, new ChoordWrapper(choordX, choordY));
 					i++;
 				}
 
+				Map<Node, List<Node>> drawnList = new HashMap<Node, List<Node>>();
 				// draw edges first
 				// TODO: we draw one edge two times at the moment because we have an undirected graph. But this
 				// shouldn`t matter because we have the same edge costs and no one will see in. Perhaps refactor later.
@@ -95,9 +91,24 @@ public class ShowGraphView extends JPanel {
 					ChoordWrapper startNode = choordsForNodes.get(entry.getKey());
 
 					for (Edge edge : entry.getValue()) {
+
+						// if other direction was drawn already continue
+						if (drawnList.containsKey(edge.getNode()) && drawnList.get(edge.getNode()).contains(entry.getKey())) {
+							continue;
+						}
+
 						ChoordWrapper targetNode = choordsForNodes.get(edge.getNode());
 						g.setColor(Color.RED);
 						g.drawLine(startNode.getChoordX(), startNode.getChoordY(), targetNode.getChoordX(), targetNode.getChoordY());
+
+						// add drawn edges to the drawnList
+						if (drawnList.containsKey(entry.getKey())) {
+							drawnList.get(entry.getKey()).add(edge.getNode());
+						} else {
+							List<Node> nodes = new ArrayList<Node>();
+							nodes.add(edge.getNode());
+							drawnList.put(entry.getKey(), nodes);
+						}
 
 						// if (startNode.getChoordX() - targetNode.getChoordX() < 0) {
 
@@ -138,9 +149,6 @@ public class ShowGraphView extends JPanel {
 						labelX += startNode.getChoordX();
 						labelY += startNode.getChoordY();
 
-						// LOGGER.log(Level.INFO, "LabelX: " + labelX);
-						// LOGGER.log(Level.INFO, "LabelY: " + labelY);
-
 						g.setColor(Color.BLACK);
 						g.drawString(String.valueOf(edge.getCosts()), labelX - f.stringWidth(String.valueOf(edge.getCosts())) / 2, labelY + f.getHeight() / 2);
 					}
@@ -152,7 +160,6 @@ public class ShowGraphView extends JPanel {
 					// int nodeWidth = Math.max(width, f.stringWidth(entry.getKey().getNodeText()) + width / 2);
 
 					ChoordWrapper wrapper = entry.getValue();
-					// LOGGER.log(Level.INFO, wrapper.toString());
 
 					g.setColor(Color.white);
 					g.fillOval(wrapper.getChoordX() - nodeWidth / 2, wrapper.getChoordY() - nodeHeight / 2, nodeWidth, nodeHeight);
@@ -167,8 +174,8 @@ public class ShowGraphView extends JPanel {
 		};
 		JScrollPane scrollPane = new JScrollPane(drawArea);
 
-		drawArea.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-		scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//		drawArea.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+//		scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		// scrollPane.setPreferredSize(new Dimension(200, 200));
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
