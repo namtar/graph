@@ -52,7 +52,7 @@ public class MainWindow extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1024, 768));
-		setResizable(false);
+		setResizable(false);				
 
 		setTitle("Graph Programm");
 		contentPane = new JPanel();

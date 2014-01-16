@@ -101,7 +101,6 @@ public class Graph implements Serializable {
 				adjacencyList.put(value.getNode(), edges);
 			}
 		}
-
 	}
 
 	/**
@@ -198,36 +197,41 @@ public class Graph implements Serializable {
 			Node startNode = nodes[nodeIndex];
 			// create random edge for actual node.
 			boolean hasAlreadyEdge = true;
+
+			// Stupid hack but shall work..... If the list of edges is already full for the node we must prevent the
+			// incrementation of i, because it can happen that one edge is not created.
+			if (adjacencyList.get(startNode).size() == numberOfNodes - 1) {
+				i--;
+			}
+
 			// only enter loop, when node is not already full with edges
 			while (hasAlreadyEdge && !(adjacencyList.get(startNode).size() == numberOfNodes - 1)) {
 				int randomInt = rand.nextInt(numberOfNodes);
-				// Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "RandomInt: " +
-				// randomInt);
+
 				if (randomInt == nodeIndex) {
-					// Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "NumberOfNodes: " +
-					// numberOfNodes);
-					Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO,
-							"Kollission: randomInt / nodeIndex " + randomInt + " / " + nodeIndex);
 					continue;
 				}
 
-				Node checkNode = nodes[randomInt];
+				Node targetNode = nodes[randomInt];
 
 				List<Edge> edgesForNode = adjacencyList.get(startNode);
 				boolean contained = false;
 				for (Edge edge : edgesForNode) {
-					if (edge.getNode().equals(checkNode)) {
+					if (edge.getNode().equals(targetNode)) {
 						contained = true;
 						break;
 					}
 				}
+
 				if (!contained) {
 					// add new Edge
 					Random edgeCostRandom = new Random();
-					Edge edge = new Edge(checkNode, edgeCostRandom.nextInt(100));
+					Edge edge = new Edge(targetNode, edgeCostRandom.nextInt(100));
+
+					System.out.println("Call addEdge: " + i);
+
 					addEdge(startNode, edge); // this will add the edge bidirectional. If the node contains the edge.
-												// The
-												// reverse node has the edge too.
+												// The reverse node has the edge too.
 					hasAlreadyEdge = false;
 				}
 
@@ -235,7 +239,6 @@ public class Graph implements Serializable {
 
 			if (nodeIndex == numberOfNodes - 1) {
 				// then start with the first node again.
-				Logger.getLogger(GenerateRandomGraphDialog.class.getName()).log(Level.INFO, "Restart Nodes");
 				nodeIndex = 0;
 			} else {
 				nodeIndex++;

@@ -1,4 +1,4 @@
-package graph;
+package de.htw.berlin.student.graph;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
